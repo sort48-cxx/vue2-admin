@@ -61,7 +61,7 @@
       </el-col>
       <el-col :span="21">
         <keep-alive>
-          <router-view></router-view>
+        	<router-view></router-view>
         </keep-alive>
       </el-col>
     </el-row>
@@ -84,12 +84,10 @@ export default {
 
 <style scoped>
 .m-box {
-  position: fixed;
   background-color: #f4f4f4;
   height: 100%;
   width: 100%;
-  top: 0;
-  left: 0;
+
 }
 .el-menu {
   border: 0;
