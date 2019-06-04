@@ -7,6 +7,7 @@ import VueRouter from 'vue-router'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css'
 import common from'./common/toast.js'
+import store from './store/store'
 
 Vue.config.productionTip = false
 Vue.prototype.common = common
@@ -17,6 +18,7 @@ Vue.use(VueRouter)
 new Vue({
   el: '#app',
   router,
+  store,
   components: { App },
   template: '<App/>'
 })

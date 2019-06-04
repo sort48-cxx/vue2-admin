@@ -95,7 +95,6 @@ export const getRequest = (url, data) => {
     url: `${base}${url}`,
   });
 }
-
 /** 运用实例 */
 
 /* GET

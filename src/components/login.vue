@@ -23,7 +23,8 @@
 
 
 <script>
-import { postRequest } from "../util/http.js";
+import { postRequest, getRequest } from "../util/http.js";
+import { mapActions, mapState } from "vuex";
 export default {
   name: "Login",
   data() {
@@ -54,7 +55,14 @@ export default {
       }
     };
   },
+  mounted() {
+    this.getAdminData();
+  },
+  computed: {
+    ...mapState(["adminInfo"])
+  },
   methods: {
+    ...mapActions(["getAdminData"]),
     /**
      * 公共方法-弹窗
      */
@@ -64,7 +72,7 @@ export default {
         type: "warning"
       });
     },
-    submitForm(formName) {
+    async submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
           postRequest("//elm.cangdu.org/admin/login", {
@@ -80,13 +88,21 @@ export default {
               }
             })
             .catch(err => {
-			   this.showMessage(err);
+              this.showMessage(err);
             });
         } else {
           this.showMessage("请输入正确的用户名密码");
           return false;
         }
       });
+    }
+  },
+  watch: {
+    adminInfo: function(newValue) {
+      if (newValue.data.id) {
+        this.showMessage("检测到您之前登录过，将自动登录");
+        this.$router.push("/main");
+      }
     }
   }
 };

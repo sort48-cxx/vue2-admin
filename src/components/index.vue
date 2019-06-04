@@ -57,6 +57,7 @@
 import { getRequest } from "../util/http.js";
 import adminHeader from "@/common/admin-header";
 import echarts from "@/common/echarts";
+import axios from "axios";
 export default {
   data() {
     return {
@@ -94,7 +95,7 @@ export default {
         this.countAdmin(a);
         this.sevenDay.push(a); //图标日期-当天之前的6天日期
       }
-      this.sevenDate.push(this.userArr, this.orderArr, this.adminArr);//图标数据-当天之前的6天
+      this.sevenDate.push(this.userArr, this.orderArr, this.adminArr); //图标数据-当天之前的6天
     },
     getDate(da) {
       let d = new Date(da);
@@ -150,7 +151,7 @@ export default {
         });
     },
     initData() {
-      /** 统计注册用户*/
+      /** 统计注册用户
       getRequest("//elm.cangdu.org/v1/users/count")
         .then(res => {
           if (res.data.status === 1) {
@@ -159,8 +160,9 @@ export default {
         })
         .catch(err => {
           console.log("请求失败");
-        });
-      /** 统计订单*/
+		});
+		*/
+      /** 统计订单
       getRequest("//elm.cangdu.org/bos/orders/count")
         .then(res => {
           if (res.data.status === 1) {
@@ -169,8 +171,9 @@ export default {
         })
         .catch(err => {
           console.log("请求失败");
-        });
-      /** 统计管理员*/
+		});
+	*/
+      /** 统计管理员
       getRequest("//elm.cangdu.org/admin/count")
         .then(res => {
           if (res.data.status === 1) {
@@ -180,6 +183,28 @@ export default {
         .catch(err => {
           console.log("请求失败");
         });
+		*/
+      let _this = this;
+      axios
+        .all([
+          getRequest("//elm.cangdu.org/v1/users/count"),
+          getRequest("//elm.cangdu.org/bos/orders/count"),
+          getRequest("//elm.cangdu.org/admin/count")
+        ])
+        // .then(
+        //   axios.spread(function(res1, res2, res3) {
+        //     _this.allUserCount = res1.data.count;
+        //     _this.allOrderCount = res2.data.count;
+        //     _this.allAdminCount = res3.data.count;
+        //   })
+        // )
+        .then(
+          axios.spread((res1, res2, res3) => {
+            this.allUserCount = res1.data.count;
+            this.allOrderCount = res2.data.count;
+            this.allAdminCount = res3.data.count;
+          })
+        );
     }
   }
 };
